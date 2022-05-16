@@ -8,11 +8,13 @@ const {
   createSection,
   getSections,
   getSectionsCategories,
+  deleteSection,
 } = require("../controllers/sectionController");
 const router = express.Router();
 const { isAuthenticatedUser } = require("../middleware/auth");
 
-router.route("/section").post(createSection);
+router.route("/admin/section").post(createSection);
+router.route("/admin/section/:id").delete(deleteSection);
 
 router.route("/section").get(getSections);
 router.route("/sections_categories").get(getSectionsCategories);
