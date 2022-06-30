@@ -4,6 +4,7 @@ const cloudinary = require("cloudinary");
 
 exports.createCategory = catchAsyncErrors(async (req, res, next) => {
   const { name, section } = req.body;
+  console.log(req.body);
   const result = await cloudinary.v2.uploader.upload(req.body.image, {
     folder: "categories",
   });

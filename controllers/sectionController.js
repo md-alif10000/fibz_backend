@@ -58,12 +58,17 @@ exports.deleteSection = catchAsyncErrors(async (req, res) => {
   const categories = await Category.find({ section: id });
   if (categories) {
     for (let i = 0; i < categories.length; i++) {
-      const result = await cloudinary.v2.uploader.destroy(categories[i]._id);
+      if (categories[i].image.public_id) {
+        const result = await cloudinary.v2.uploader.destroy(
+          categories[i].image.public_id
+        );
+      }
       const _cat = await Category.findByIdAndDelete(categories[i]._id);
     }
   }
-
-  await cloudinary.v2.uploader.destroy(section.image.public_id);
+  if (section.image.public_id) {
+    await cloudinary.v2.uploader.destroy(section.image.public_id);
+  }
 
   const delsection = await Section.findByIdAndDelete(id);
 

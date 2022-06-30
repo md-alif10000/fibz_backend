@@ -15,6 +15,19 @@ const productSchema = mongoose.Schema({
     required: [true, "Please Enter product Price"],
     maxLength: [8, "Price cannot exceed 8 characters"],
   },
+  sizes: [Object],
+  colors: [
+    {
+      name: {
+        type: String,
+        required: [true, "Please Enter color name"],
+      },
+      code: {
+        type: String,
+        required: [true, "Please Enter color code"],
+      },
+    },
+  ],
   ratings: {
     type: Number,
     default: 0,
