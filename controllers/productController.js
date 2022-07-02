@@ -1,4 +1,6 @@
 const Product = require("../models/productModel");
+const Section = require("../models/sectionModel");
+const Category = require("../models/categoryModel");
 const ErrorHander = require("../utils/errorhander");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ApiFeatures = require("../utils/apifeatures");
@@ -297,5 +299,24 @@ exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
+  });
+});
+
+exports.getHomePageData = catchAsyncErrors(async (req, res, next) => {
+  const featuredProducts = await Product.find({ featured: true }).limit(8);
+  const mensProducts = await Product.find({
+    section: "62bedb24a4891f00041f193b",
+  }).limit(4);
+  const latestProducts = await Product.find().sort({ createdAt: -1 }).limit(4);
+  const sections = await Section.find();
+  const categories = await Category.find();
+
+  res.status(200).json({
+    success: true,
+    featuredProducts,
+    mensProducts,
+    latestProducts,
+    sections,
+    categories,
   });
 });
