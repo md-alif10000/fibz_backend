@@ -9,12 +9,18 @@ const {
   getProductReviews,
   deleteReview,
   getAdminProducts,
+  getProductsBySection,
+  getProductsByCategory,
+  getFeaturedProducts,
 } = require("../controllers/productController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 
 const router = express.Router();
 
 router.route("/products").get(getAllProducts);
+router.route("/products/section/:id").get(getProductsBySection);
+router.route("/products/category/:id").get(getProductsByCategory);
+router.route("/products/featured").get(getFeaturedProducts);
 
 router
   .route("/admin/products")

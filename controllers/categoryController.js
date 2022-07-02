@@ -1,6 +1,7 @@
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const Category = require("../models/categoryModel");
 const cloudinary = require("cloudinary");
+const productModel = require("../models/productModel");
 
 exports.createCategory = catchAsyncErrors(async (req, res, next) => {
   const { name, section } = req.body;
@@ -35,6 +36,15 @@ exports.getCategories = catchAsyncErrors(async (req, res, next) => {
   const categories = await Category.find();
 
   res.status(200).json({ success: true, categories });
+});
+
+exports.getCategory = catchAsyncErrors(async (req, res, next) => {
+  const category = await Category.findById(req.params.id);
+  const products = await productModel.find({ category: req.params.id });
+
+  res
+    .status(200)
+    .json({ success: true, category: { ...category._doc, products } });
 });
 
 exports.deleteCategory = catchAsyncErrors(async (req, res) => {

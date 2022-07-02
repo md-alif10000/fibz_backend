@@ -8,8 +8,10 @@ const cloudinary = require("cloudinary");
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   let images = [];
 
-  req.body.sizes = JSON.parse(req.body.sizes);
-  req.body.colors = JSON.parse(req.body.colors);
+  // req.body.sizes = JSON.parse(req.body.sizes);
+  // req.body.colors = JSON.parse(req.body.colors);
+
+  console.log(req.body);
 
   if (typeof req.body.images === "string") {
     images.push(req.body.images);
@@ -64,6 +66,35 @@ exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
     productsCount,
     resultPerPage,
     filteredProductsCount,
+  });
+});
+
+exports.getFeaturedProducts = catchAsyncErrors(async (req, res, next) => {
+  const products = await Product.find({ featured: true });
+
+  res.status(200).json({
+    success: true,
+    products,
+  });
+});
+
+exports.getProductsBySection = catchAsyncErrors(async (req, res, next) => {
+  const id = req.params.id;
+  const products = await Product.find({ section: id });
+
+  res.status(200).json({
+    success: true,
+    products,
+  });
+});
+
+exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
+  const id = req.params.id;
+  const products = await Product.find({ category: id });
+
+  res.status(200).json({
+    success: true,
+    products,
   });
 });
 

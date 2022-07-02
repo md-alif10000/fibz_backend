@@ -4,6 +4,7 @@ const Category = require("../models/categoryModel");
 const cloudinary = require("cloudinary");
 const req = require("express/lib/request");
 const res = require("express/lib/response");
+const productModel = require("../models/productModel");
 
 exports.createSection = catchAsyncErrors(async (req, res, next) => {
   const { name } = req.body;
@@ -31,11 +32,29 @@ exports.createSection = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getSections = catchAsyncErrors(async (req, res, next) => {
-  const sections = await Section.find();
+  const secs = await Section.find();
+  const cats = await Category.find();
+  var sections = [];
+  secs.forEach((section) => {
+    const categories = cats.filter((cat) => cat.section == section._id);
+    console.log(categories);
+    section.categories = categories;
+    sections.push(section);
+  });
 
   res.status(200).json({ success: true, sections });
 });
 
+exports.getSection = catchAsyncErrors(async (req, res, next) => {
+  const section = await Section.findById(req.params.id);
+  const categories = await Category.find({ section: req.params.id });
+  const products = await productModel.find({ section: req.params.id }).populate("category","_id name");
+
+  res.status(200).json({
+    success: true,
+    section: { ...section._doc, products, categories },
+  });
+});
 exports.getSectionsCategories = catchAsyncErrors(async (req, res, next) => {
   const sections = await Section.find();
   var sectionsCategories = [];
