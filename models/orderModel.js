@@ -13,20 +13,20 @@ const orderSchema = new mongoose.Schema({
 
     state: {
       type: String,
-      required: true,
+      // required: true,
     },
 
     country: {
       type: String,
       required: true,
     },
-    pinCode: {
+    zipCode: {
       type: Number,
       required: true,
     },
-    phoneNo: {
+    phone: {
       type: Number,
-      required: true,
+      // required: true,
     },
   },
   orderItems: [
@@ -57,7 +57,7 @@ const orderSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
-    required: true,
+    // required: true,
   },
   paymentInfo: {
     id: {

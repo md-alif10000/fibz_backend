@@ -31,6 +31,7 @@ const order = require("./routes/orderRoute");
 const payment = require("./routes/paymentRoute");
 const section = require("./routes/sectionRoute");
 const category = require("./routes/categoryRoute");
+const stripeRoute = require("./routes/stripeRoute");
 
 app.use("/api/v1", product);
 app.use("/api/v1", user);
@@ -39,6 +40,7 @@ app.use("/api/v1", order);
 app.use("/api/v1", payment);
 app.use("/api/v1", section);
 app.use("/api/v1", category);
+app.use("/api/v1", stripeRoute);
 
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
