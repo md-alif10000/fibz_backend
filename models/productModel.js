@@ -10,6 +10,29 @@ const productSchema = mongoose.Schema({
     type: String,
     required: [true, "Please Enter product Description"],
   },
+  composition: {
+    type: String,
+  },
+  sleeves: {
+    type: String,
+  },
+  nishes1: {
+    type: String,
+  },
+  nishes2: {
+    type: String,
+  },
+  cutout: {
+    type: String,
+  },
+  careInstructions: {
+    type: String,
+  },
+  oldPrice: {
+    type: Number,
+    required: [true, "Please Enter product old Price"],
+    maxLength: [8, "Price cannot exceed 8 characters"],
+  },
   price: {
     type: Number,
     required: [true, "Please Enter product Price"],
@@ -19,19 +42,21 @@ const productSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  sizes: [Object],
-  colors: [
-    {
-      name: {
-        type: String,
-        required: [true, "Please Enter color name"],
-      },
-      code: {
-        type: String,
-        required: [true, "Please Enter color code"],
-      },
+  sizes: [{
+    name:{
+      type:String,
+      required:true
+      
     },
-  ],
+    stock:{
+      type:Number
+    }
+
+  }],
+  color:{
+    type:String,
+    required:true
+  },
   ratings: {
     type: Number,
     default: 0,
@@ -56,6 +81,10 @@ const productSchema = mongoose.Schema({
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
+    required: [true, "Please Enter Product Category"],
+  },
+  subCategory: {
+    type: String,
     required: [true, "Please Enter Product Category"],
   },
   Stock: {
@@ -93,7 +122,7 @@ const productSchema = mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
-    required: true,
+    // required: true,
   },
   createdAt: {
     type: Date,

@@ -59,3 +59,49 @@ exports.deleteCategory = catchAsyncErrors(async (req, res) => {
 
   res.status(200).json({ success: true, message: "Successfully deleted" });
 });
+
+exports.addSubCategory = catchAsyncErrors(async (req, res) => {
+  const { categoryId, name } = req.body;
+
+  const category = await Category.findById(categoryId);
+  const subCategory = {
+    name,
+  };
+
+  category.subCategories.push(subCategory);
+
+  await category.save({ validateBeforeSave: false });
+
+  res
+    .status(200)
+    .json({ success: true, message: "Successfully Added Sub Category" });
+});
+
+
+exports.deleteSubCategory = catchAsyncErrors(async (req, res) => {
+  const { id } = req.params;
+  const {categoryId}=req.body
+
+  const category = await Category.findById(categoryId);
+  
+
+  const subCategories = category.subCategories.filter(
+    (cat) => cat._id.toString() !== id.toString()
+  );
+
+  await Category.findByIdAndUpdate(
+    categoryId,
+    {
+      subCategories
+    },
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
+
+  res
+    .status(200)
+    .json({ success: true, message: "Successfully Deleted Sub Category" });
+});

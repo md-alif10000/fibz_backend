@@ -4,38 +4,61 @@ const Category = require("../models/categoryModel");
 const ErrorHander = require("../utils/errorhander");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ApiFeatures = require("../utils/apifeatures");
-const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 
 // Create Product -- Admin
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
-  let images = [];
+  // let images = [];
 
   // req.body.sizes = JSON.parse(req.body.sizes);
   // req.body.colors = JSON.parse(req.body.colors);
 
-  console.log(req.body);
+  // console.log(req.body);
 
-  if (typeof req.body.images === "string") {
-    images.push(req.body.images);
-  } else {
-    images = req.body.images;
-  }
+  // if (typeof req.body.images === "string") {
+  //   images.push(req.body.images);
+  // } else {
+  //   images = req.body.images;
+  // }
 
-  const imagesLinks = [];
+  const imagesLinks = [
+    {
+      public_id: req.body.public_id,
+      url: req.body.url,
+    },
+  ];
 
-  for (let i = 0; i < images.length; i++) {
-    const result = await cloudinary.v2.uploader.upload(images[i], {
-      folder: "products",
-    });
+  // for (let i = 0; i < images.length; i++) {
+  //   const result = await cloudinary.v2.uploader.upload_large(images[i], {
+  //     folder: "products",
+  //   });
 
-    imagesLinks.push({
-      public_id: result.public_id,
-      url: result.secure_url,
-    });
-  }
+  //   imagesLinks.push({
+  //     public_id: result.public_id,
+  //     url: result.secure_url,
+  //   });
+  // }
 
   req.body.images = imagesLinks;
-  req.body.user = req.user.id;
+  // req.body.user = req.user._id;
+  req.body.sizes = [
+    {
+      name: "S",
+      stock: 8,
+    },
+    {
+      name: "M",
+      stock: 12,
+    },
+    {
+      name: "L",
+      stock: 12,
+    },
+    {
+      name: "XL",
+      stock: 4,
+    },
+  ];
 
   const product = await Product.create(req.body);
 
@@ -305,7 +328,10 @@ exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
 exports.getHomePageData = catchAsyncErrors(async (req, res, next) => {
   const featuredProducts = await Product.find({ featured: true }).limit(8);
   const mensProducts = await Product.find({
-    section: "62bedb24a4891f00041f193b",
+    section: "6282869fd0eb960004f727ee",
+  }).limit(4);
+  const womensProducts = await Product.find({
+    section: "62823f12272ac62804e371ec",
   }).limit(4);
   const latestProducts = await Product.find().sort({ createdAt: -1 }).limit(4);
   const sections = await Section.find();
@@ -315,6 +341,7 @@ exports.getHomePageData = catchAsyncErrors(async (req, res, next) => {
     success: true,
     featuredProducts,
     mensProducts,
+    womensProducts,
     latestProducts,
     sections,
     categories,
