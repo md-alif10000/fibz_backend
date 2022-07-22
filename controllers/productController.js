@@ -330,6 +330,7 @@ exports.getHomePageData = catchAsyncErrors(async (req, res, next) => {
   const mensProducts = await Product.find({
     section: "6282869fd0eb960004f727ee",
   }).limit(4);
+  
   const womensProducts = await Product.find({
     section: "62823f12272ac62804e371ec",
   }).limit(4);
