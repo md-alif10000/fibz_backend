@@ -93,3 +93,15 @@ exports.deleteSection = catchAsyncErrors(async (req, res) => {
 
   res.status(200).json({ success: true, message: "Successfully deleted" });
 });
+
+
+exports.updateSection = catchAsyncErrors(async (req, res) => {
+  const { id } = req.params;
+
+  const section = await Section.findByIdAndUpdate(id,req.body,{new:true});
+  
+
+
+
+  res.status(200).json({ success: true, message: "Successfully Updated" });
+});
