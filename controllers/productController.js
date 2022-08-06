@@ -10,10 +10,8 @@ const cloudinary = require("cloudinary").v2;
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   // let images = [];
 
-  // req.body.sizes = JSON.parse(req.body.sizes);
-  // req.body.colors = JSON.parse(req.body.colors);
-
-  // console.log(req.body);
+  req.body.sizes = JSON.parse(req.body.sizes);
+  req.body.colors = JSON.parse(req.body.colors);
 
   // if (typeof req.body.images === "string") {
   //   images.push(req.body.images);
@@ -41,24 +39,6 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
 
   req.body.images = imagesLinks;
   // req.body.user = req.user._id;
-  req.body.sizes = [
-    {
-      name: "S",
-      stock: 8,
-    },
-    {
-      name: "M",
-      stock: 12,
-    },
-    {
-      name: "L",
-      stock: 12,
-    },
-    {
-      name: "XL",
-      stock: 4,
-    },
-  ];
 
   const product = await Product.create(req.body);
 
@@ -187,6 +167,9 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
 
     req.body.images = imagesLinks;
   }
+
+  req.body.sizes = JSON.parse(req.body.sizes);
+  req.body.colors = JSON.parse(req.body.colors);
 
   product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
@@ -330,7 +313,7 @@ exports.getHomePageData = catchAsyncErrors(async (req, res, next) => {
   const mensProducts = await Product.find({
     section: "6282869fd0eb960004f727ee",
   }).limit(4);
-  
+
   const womensProducts = await Product.find({
     section: "62823f12272ac62804e371ec",
   }).limit(4);

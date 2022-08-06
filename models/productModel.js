@@ -42,21 +42,29 @@ const productSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  sizes: [{
-    name:{
-      type:String,
-      required:true
-      
+  sizes: [
+    {
+      name: {
+        type: String,
+        required: true,
+      },
+      stock: {
+        type: Number,
+      },
     },
-    stock:{
-      type:Number
-    }
-
-  }],
-  color:{
-    type:String,
-    required:true
-  },
+  ],
+  colors: [
+    {
+      name: {
+        type: String,
+        required: true,
+      },
+      code: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   ratings: {
     type: Number,
     default: 0,
