@@ -34,6 +34,7 @@ const section = require("./routes/sectionRoute");
 const category = require("./routes/categoryRoute");
 const stripeRoute = require("./routes/stripeRoute");
 const setting = require("./routes/settingRoute");
+const coupon = require("./routes/couponRoute");
 
 app.use("/api/v1", product);
 app.use("/api/v1", user);
@@ -44,6 +45,7 @@ app.use("/api/v1", section);
 app.use("/api/v1", category);
 app.use("/api/v1", stripeRoute);
 app.use("/api/v1", setting);
+app.use("/api/v1", coupon);
 
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 

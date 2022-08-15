@@ -1,37 +1,28 @@
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 
 const stripe = require("stripe")(
-  "sk_test_51KqsYOEB6Tsc76QKv4seNpb3f81k14ceL2LfH6mkmvlaM2UwpIDEyCjP2Ce9x6o2uNDBBzlA1Zqx9Y9Z9u5vwXMq00D8B6T7Oz"
+  "sk_test_51LGbroCg9ADniRXPLtYCfoDEdTZzlZOlWnxFpun9KzVzPioSQNve5gYNfv7AZUsqBTFIxyPeq2BtMMcDFYSY6utp00myvjPzLw"
 );
 
 exports.processStripePayment = catchAsyncErrors(async (req, res, next) => {
-  const { tokenId,amount } = req.body;
+  const myPayment = await stripe.paymentIntents.create({
+    amount: req.body.amount * 100,
+    currency: "eur",
+    payment_method_types: ["card"],
+    metadata: {
+      company: "Ecommerce",
+    },
+  });
 
-  stripe.charges.create({
-    source:tokenId,
-    amount:amount,
-    currency:"usd"
-
-  },(stripeErr,stripeRes)=>{
-    if(stripeErr){
-      res.status(500).json(stripeErr)
-    }else{
-      res.status(200).json(stripeRes)
-    }
-
-  })
-
-
-
-  
+  res
+    .status(200)
+    .json({ success: true, client_secret: myPayment.client_secret });
 });
 
 exports.sendStripeApiKey = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ stripeApiKey: process.env.STRIPE_API_KEY });
 });
 
-
-
-exports.sendPaypalApiKey=catchAsyncErrors(async (req, res, next) => {
+exports.sendPaypalApiKey = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ paypalApiKey: process.env.PAYPAL_CLIENT_ID });
 });

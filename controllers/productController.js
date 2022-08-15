@@ -8,34 +8,39 @@ const cloudinary = require("cloudinary").v2;
 
 // Create Product -- Admin
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
-  // let images = [];
+  var images = [];
+
+  console.log(req.body)
 
   req.body.sizes = JSON.parse(req.body.sizes);
   req.body.colors = JSON.parse(req.body.colors);
 
-  // if (typeof req.body.images === "string") {
-  //   images.push(req.body.images);
-  // } else {
-  //   images = req.body.images;
-  // }
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
 
-  const imagesLinks = [
-    {
-      public_id: req.body.public_id,
-      url: req.body.url,
-    },
-  ];
+  // const imagesLinks = [
+  //   {
+  //     public_id: req.body.public_id,
+  //     url: req.body.url,
+  //   },
+  // ];
+  const imagesLinks = [];
 
-  // for (let i = 0; i < images.length; i++) {
-  //   const result = await cloudinary.v2.uploader.upload_large(images[i], {
-  //     folder: "products",
-  //   });
+  console.log(images)
 
-  //   imagesLinks.push({
-  //     public_id: result.public_id,
-  //     url: result.secure_url,
-  //   });
-  // }
+  for (let i = 0; i < images.length; i++) {
+    const result = await cloudinary.v2.uploader.upload_large(images[i], {
+      folder: "products",
+    });
+
+    imagesLinks.push({
+      public_id: result.public_id,
+      url: result.secure_url,
+    });
+  }
 
   req.body.images = imagesLinks;
   // req.body.user = req.user._id;
@@ -64,7 +69,9 @@ exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
   // apiFeature.pagination(resultPerPage);
 
   // products = await apiFeature.query;
-  const products = await Product.find();
+  const products = await Product.find().populate("section category");
+
+  console.log("hereee");
 
   res.status(200).json({
     success: true,
@@ -106,7 +113,9 @@ exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
 
 // Get All Product (Admin)
 exports.getAdminProducts = catchAsyncErrors(async (req, res, next) => {
-  const products = await Product.find();
+  const products = await Product.find().populate(
+    "section category subCategory"
+  );
 
   res.status(200).json({
     success: true,
