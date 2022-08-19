@@ -10,7 +10,7 @@ const cloudinary = require("cloudinary").v2;
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   var images = [];
 
-  console.log(req.body)
+  console.log(req.body);
 
   req.body.sizes = JSON.parse(req.body.sizes);
   req.body.colors = JSON.parse(req.body.colors);
@@ -29,7 +29,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   // ];
   const imagesLinks = [];
 
-  console.log(images)
+  console.log(images);
 
   for (let i = 0; i < images.length; i++) {
     const result = await cloudinary.v2.uploader.upload_large(images[i], {
@@ -202,9 +202,9 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
   }
 
   // Deleting Images From Cloudinary
-  for (let i = 0; i < product.images.length; i++) {
-    await cloudinary.v2.uploader.destroy(product.images[i].public_id);
-  }
+  // for (let i = 0; i < product.images.length; i++) {
+  //   await cloudinary.uploader.destroy(product.images[i].public_id);
+  // }
 
   await product.remove();
 

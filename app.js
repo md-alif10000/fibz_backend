@@ -32,22 +32,22 @@ const order = require("./routes/orderRoute");
 const payment = require("./routes/paymentRoute");
 const section = require("./routes/sectionRoute");
 const category = require("./routes/categoryRoute");
+const nishe = require("./routes/nisheRoute");
 const stripeRoute = require("./routes/stripeRoute");
 const setting = require("./routes/settingRoute");
 const coupon = require("./routes/couponRoute");
 
 app.use("/api/v1", product);
 app.use("/api/v1", user);
-
 app.use("/api/v1", order);
 app.use("/api/v1", payment);
 app.use("/api/v1", section);
 app.use("/api/v1", category);
+app.use("/api/v1", nishe);
 app.use("/api/v1", stripeRoute);
 app.use("/api/v1", setting);
 app.use("/api/v1", coupon);
 
-app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 app.get("*", (req, res) => {
   // res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
