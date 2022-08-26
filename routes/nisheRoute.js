@@ -16,6 +16,6 @@ router.route("/admin/nishe/:id").delete(isAuthenticatedUser, deleteNishe);
 router.route("/admin/nishe/:id").put(isAuthenticatedUser, updateNishe);
 
 router.route("/nishe").get(getNishes);
-router.route("/nishe/:id").get(getNishe);
+router.route("/nishe/:slug").get(getNishe);
 
 module.exports = router;

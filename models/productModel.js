@@ -17,10 +17,12 @@ const productSchema = mongoose.Schema({
     type: String,
   },
   nishes1: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    required: [true, "Nishe 1 is required"],
   },
   nishes2: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    required: [true, "Nishe 2 is required"],
   },
   cutout: {
     type: String,

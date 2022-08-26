@@ -4,6 +4,7 @@ const Category = require("../models/categoryModel");
 const ErrorHander = require("../utils/errorhander");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ApiFeatures = require("../utils/apifeatures");
+const Nishe = require("../models/Nishe");
 const cloudinary = require("cloudinary").v2;
 
 // Create Product -- Admin
@@ -104,6 +105,15 @@ exports.getProductsBySection = catchAsyncErrors(async (req, res, next) => {
 exports.getProductsByCategory = catchAsyncErrors(async (req, res, next) => {
   const id = req.params.id;
   const products = await Product.find({ category: id });
+
+  res.status(200).json({
+    success: true,
+    products,
+  });
+});
+exports.getProductsByNishe = catchAsyncErrors(async (req, res, next) => {
+  const nishe = req.params.nishe;
+  const products = await Product.find({ nishe: { slug: nishe } });
 
   res.status(200).json({
     success: true,
@@ -329,6 +339,7 @@ exports.getHomePageData = catchAsyncErrors(async (req, res, next) => {
   const latestProducts = await Product.find().sort({ createdAt: -1 }).limit(4);
   const sections = await Section.find();
   const categories = await Category.find();
+  const nishes = await Nishe.find();
 
   res.status(200).json({
     success: true,
@@ -338,5 +349,6 @@ exports.getHomePageData = catchAsyncErrors(async (req, res, next) => {
     latestProducts,
     sections,
     categories,
+    nishes
   });
 });

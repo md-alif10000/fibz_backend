@@ -13,6 +13,7 @@ const {
   getProductsByCategory,
   getFeaturedProducts,
   getHomePageData,
+  getProductsByNishe,
 } = require("../controllers/productController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 
@@ -22,15 +23,14 @@ router.route("/products").get(getAllProducts);
 router.route("/products/section/:id").get(getProductsBySection);
 router.route("/products/category/:id").get(getProductsByCategory);
 router.route("/products/featured").get(getFeaturedProducts);
+router.route("/products/nishe/:slug").get(getProductsByNishe);
 router.route("/home").get(getHomePageData);
 
 router
   .route("/admin/products")
   .get(isAuthenticatedUser, authorizeRoles("admin"), getAdminProducts);
 
-router
-  .route("/admin/product/new")
-  .post( createProduct);
+router.route("/admin/product/new").post(createProduct);
 
 router
   .route("/admin/product/:id")
